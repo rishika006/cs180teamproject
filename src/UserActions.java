@@ -36,16 +36,19 @@ public class UserActions {
 
     // --------------------------------------
     // TODO: idk format for displaying image -- pls do this
+    // TODO: turn this (terminal code) into GUI
+    // TODO: look at the methods below to copy 'back' button if needed
     // display profile picture (server code 3)
     public void displayProfilePic() throws IOException {
         output.println("3");
         System.out.println("Enter user to get profile picture for: ");
-        Scanner scanner = new Scanner(System.in); //TODO delete this line after converting displayProfilePicture to GUI
-        String user = scanner.nextLine(); //TODO delete this line after converting displayProfilePicture to GUI
+        Scanner scanner = new Scanner(System.in);
+        String user = scanner.nextLine();
         // instantiate HomePage to use its methods
         HomePage homePage = new HomePage(client);
         homePage.showHomePage();
     }
+    // TODO: once you fix this method, delete the scanner import at the top
 
 
 

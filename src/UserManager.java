@@ -42,6 +42,20 @@ public class UserManager  {
     }
 
 
+    public void loadUsers() {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("Users.txt"));
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                String username = line.split (",")[4] ;
+                User user = getUser(username) ;
+                ALL_USERS.add(user) ;
+
+            }
+        } catch (IOException ie) {
+            System.out.println("Error reading File");
+        }
+    }
 
 
     // readUser Load users from file to the ALL_USERS ArrayList.
@@ -53,8 +67,13 @@ public class UserManager  {
             ALL_USERS.clear();
 
             while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+
 
                 String[] userDetails = line.split(",");
+
+
+
 
                 String firstName = userDetails[0];
 
@@ -74,6 +93,10 @@ public class UserManager  {
                         new User(firstName, lastName, phone, email, username, password);
                     }
                 }
+
+
+
+
             }
 
         } catch (IOException e) {
@@ -111,7 +134,7 @@ public class UserManager  {
     // Check if a username already exists among any other Users in the List of Users.
 
     public boolean usernameExists(String username) {
-        readUser();
+        loadUsers();
         for (User user : ALL_USERS) {
 
             if (user.getUsername().equals(username)) {
@@ -130,7 +153,11 @@ public class UserManager  {
 
     // Create New User
 
-    public static User createNewUser(String firstName, String lastName, String phone, String email, String username, String password, String confirmPassword) {
+    public User createNewUser(String firstName, String lastName, String phone, String email, String username, String password, String confirmPassword) {
+        loadUsers();
+        if (searchUser(username)) {
+            return null ;
+        }
 
         for (User user : ALL_USERS) {
             if (user.getUsername().equals(username)) {
@@ -150,8 +177,6 @@ public class UserManager  {
 
         }
 
-
-
         User newUser = new User(firstName, lastName, phone, email, username, password);
 
 
@@ -167,6 +192,7 @@ public class UserManager  {
     // Validate User
 
     public boolean validateUser(String username, String password) {
+
 
         if (searchUsersFile(username)) {
             if (userSearch(username) == null) {

@@ -6,7 +6,7 @@ public class Server {
 
 
     public static void main(String[] args) {
-        int port = 5252; // Port number for the server
+        int port = 4242; // Port number for the server
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Server is listening on port " + port);
@@ -59,7 +59,7 @@ class ClientHandler extends ServerManager implements Runnable {
                         String username = reader.readLine();
                         String password = reader.readLine();
                         String confirmPassword = reader.readLine();
-                        user = createNewUser(firstName, lastName, phone, email, username, password, confirmPassword);
+                        user = user_createNewUser(firstName, lastName, phone, email, username, password, confirmPassword);
                         if (user != null) {
                             writer.println("true");
                         } else {

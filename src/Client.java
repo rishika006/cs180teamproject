@@ -38,7 +38,7 @@ public class Client {
     // MAIN METHOD
     public static void main(String[] args) {
         try {
-            new Client("localhost", 5252);
+            new Client("localhost", 4242);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error connecting to server: " + e.getMessage());
         }

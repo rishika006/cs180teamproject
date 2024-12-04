@@ -80,7 +80,7 @@ public class Conversation extends UserManager implements IConversation {
 				synchronized (gatekeeper) {
 					try (BufferedWriter writer = new BufferedWriter(new FileWriter(String.format("%s_%s.txt", this.user.getUsername(), user.getUsername())))) {
 						System.out.println("Starting a conversation with " + user.getUsername() + "...");
-						PrintWriter pw = new PrintWriter(new FileWriter("Messages_Files.txt"));
+						PrintWriter pw = new PrintWriter(new FileWriter("Messages_Files.txt" , true));
 						pw.printf("%s_%s.txt\n", this.getUser().getUsername(), user.getUsername());
 						pw.close();
 

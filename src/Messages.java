@@ -65,7 +65,7 @@ public class Messages implements IMessages {
     public String getMessages(String username2) {
         // set the name of the file to read (either username1_username2.txt or username2_username1.txt)
         String conversationFileName = getConversationFileName(username2);
-
+        System.out.println(conversationFileName);
 
         // print all messages in the conversation to the console
         String messegeLog = "";

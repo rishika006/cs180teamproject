@@ -58,9 +58,35 @@ public class UserActions {
         // create frame & panel
         JFrame frame = new JFrame("My Contacts");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(1000, 800);
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+        frame.setSize(700, 900);
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(null);
+
+        JPanel panel = new JPanel() ;
+
+        ImageIcon front = new ImageIcon("frontBg.jpg") ;
+        Image frontImage = front.getImage().getScaledInstance(1750 , 1200 , Image.SCALE_SMOOTH) ;
+        ImageIcon frontIcon = new ImageIcon(frontImage) ;
+        // labels & buttons
+        JLabel label = new JLabel("MY CONTACTS");
+        label.setLayout(null);
+
+        label.setBackground(new Color(0x053e71));
+        label.setFont(new Font("Monospaced", Font.PLAIN, 25));
+        label.setForeground(Color.white);
+        label.setOpaque(true);
+        label.setBounds(0, 0, 700, 900); // Adjusted position and size
+        label.setIcon(frontIcon);
+        label.setHorizontalTextPosition(JLabel.CENTER);
+        label.setVerticalTextPosition(JLabel.TOP);
+        label.setIconTextGap(-300) ;
+
+        label.setVerticalAlignment(JLabel.CENTER);
+        label.setHorizontalAlignment(JLabel.CENTER);
+
+        frame.getContentPane().add(label);
+        label.setLayout(null); // Ensure absolute positioning
+
 
         // server code
         output.println("5");
@@ -68,16 +94,32 @@ public class UserActions {
         try {
             String[] contacts = bfr.readLine().split(";");
             JList<String> contactList = new JList<>(contacts);
+            contactList.setFont(new Font("Monospaced" , Font.PLAIN , 20));
+            contactList.setForeground(Color.white);
+            contactList.setBackground(new Color(0 , 0, 0 ,0 ));
+
             // make scrollable
             JScrollPane scrollPane = new JScrollPane(contactList);
-            panel.add(scrollPane, BorderLayout.CENTER);
+            scrollPane.getViewport().setOpaque(false);
+            scrollPane.setOpaque(false);
+            scrollPane.setBounds(150 , 240 , 500 , 700);
+            scrollPane.setBorder(BorderFactory.createEmptyBorder());
+            frame.add(scrollPane , JLabel.CENTER) ;
         } catch (IOException e) {
             JLabel error = new JLabel("Error reading contacts list.");
-            panel.add(error, BorderLayout.CENTER);
+            error.setBounds(400 ,400 , 200 , 200);
+            frame.add(error);
         }
 
         // back button
         JButton backButton = new JButton("Back");
+        backButton.setBounds(270 , 565 , 150 ,50);
+        backButton.setBackground(new Color(0x6eaa6b)) ;
+        backButton.setBorder(BorderFactory.createEtchedBorder());
+        backButton.setFocusable(false);
+        backButton.setFont(new Font("Monospaced" , Font.BOLD , 20));
+        backButton.setForeground(Color.black);
+        backButton.setOpaque(true);
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -86,10 +128,10 @@ public class UserActions {
                 homePage.showHomePage();
             }
         });
-        panel.add(backButton, BorderLayout.SOUTH);
+        frame.add(backButton , JLabel.CENTER);
 
         // add panel to frame
-        frame.add(panel);
+
         frame.setVisible(true);
     }
 
@@ -99,39 +141,120 @@ public class UserActions {
     // add new contact (server code 6)
     public void addNewContact() {
         // create frame & panel
-        JFrame frame = new JFrame("Add New Contact");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(1000, 800);
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 2));
+        // create a frame
+        JFrame frame = new JFrame("Add Contact") ;
+        frame.setLayout(new FlowLayout());
+        frame.setLocation(400 , 0);
+        frame.setSize(new Dimension(700 , 960));
+        frame.getContentPane().setBackground(new Color(0x141414));
 
-        // create components
-        JLabel nameLabel = new JLabel("Contact Name:");
-        JTextField nameField = new JTextField();
-        JLabel phoneLabel = new JLabel("Phone Number:");
-        JTextField phoneField = new JTextField();
-        JButton submitButton = new JButton("Add Contact");
+
+
+        JPanel topPanel = new JPanel() ;
+        topPanel.setPreferredSize(new Dimension(2000 , 1000));
+        topPanel.setBackground(new Color(0x141414));
+        topPanel.setLayout(null);
+
+        JLabel banner = new JLabel("        New Contact") ;
+        banner.setFont(new Font("Monospaced", Font.BOLD, 40));
+        banner.setForeground(new Color(0x6eaa6b));
+        banner.setOpaque(true);
+        ImageIcon front = new ImageIcon("img_1.png") ;
+        Image frontImage = front.getImage().getScaledInstance(1800 , 325 , Image.SCALE_SMOOTH) ;
+        ImageIcon frontIcon = new ImageIcon(frontImage) ;
+        banner.setIcon(frontIcon);
+        banner.setHorizontalTextPosition(JLabel.CENTER);
+        banner.setVerticalTextPosition(JLabel.TOP);
+        banner.setIconTextGap(-200);
+
+        banner.setVerticalAlignment(JLabel.CENTER);
+        banner.setHorizontalAlignment(JLabel.CENTER);
+        banner.setBounds(0,0 , 1800 , 325);
+        topPanel.add(banner) ;
+
+
+
+        JPanel inputPanel = new JPanel() ;
+        inputPanel.setLayout(new FlowLayout( FlowLayout.CENTER , 10 ,50));
+
+        inputPanel.setBounds(690,310, 550,200);
+        inputPanel.setBackground(new Color(0x141414));
+
+
+        JLabel username = new JLabel("Username: ") ;
+        // Labels don't need prefered size
+        username.setFont(new Font("Monospaced" , Font.PLAIN , 20));
+        username.setForeground(Color.yellow);
+
+        JTextField usernameFeild = new JTextField() ;
+        usernameFeild.setPreferredSize(new Dimension(300 ,30));
+        usernameFeild.setBorder(BorderFactory.createEmptyBorder());
+        usernameFeild.setFont(new Font("Monospaced" , Font.BOLD , 20));
+
+        inputPanel.add(username);
+        inputPanel.add(usernameFeild) ;
+
+        JLabel phone = new JLabel("   Phone: ") ; // Labels don't need prefered size
+        phone.setFont(new Font("Monospaced" , Font.PLAIN , 20));
+        phone.setForeground(Color.yellow);
+
+        JTextField phoneFeild = new JTextField() ;
+        phoneFeild.setPreferredSize(new Dimension(300 ,30));
+        phoneFeild.setBorder(BorderFactory.createEmptyBorder());
+        phoneFeild.setFont(new Font("Monospaced" , Font.BOLD , 20));
+        inputPanel.add(phone);
+        inputPanel.add(phoneFeild) ;
+        topPanel.add(inputPanel);
+
+
+
+        //Buttons
+        JPanel controlPanel = new JPanel() ;
+        controlPanel.setLayout(new FlowLayout(FlowLayout.CENTER , 50 ,10));
+        controlPanel.setBounds(650,550, 700,250);
+        controlPanel.setBackground(new Color(0x141414));
+
+        JButton addButton = new JButton("Add Contact");
+        addButton.setPreferredSize(new Dimension(170, 55));
+        addButton.setBackground(Color.magenta) ;
+        addButton.setBorder(BorderFactory.createEtchedBorder());
+        addButton.setFocusable(false);
+        addButton.setFont(new Font("Monospaced" , Font.BOLD , 20));
+        addButton.setForeground(Color.black);
+        addButton.setOpaque(true);
+
+
         JButton backButton = new JButton("Back");
-        panel.add(nameLabel);
-        panel.add(nameField);
-        panel.add(phoneLabel);
-        panel.add(phoneField);
-        panel.add(submitButton);
-        panel.add(backButton);
-        nameLabel.setHorizontalAlignment(JLabel.CENTER);
-        nameLabel.setVerticalAlignment(JLabel.CENTER);
-        phoneLabel.setHorizontalAlignment(JLabel.CENTER);
-        phoneLabel.setVerticalAlignment(JLabel.CENTER);
+        backButton.setPreferredSize(new Dimension(170, 55));
+        backButton.setBackground(new Color(0x6eaa6b)) ;
+        backButton.setBorder(BorderFactory.createEtchedBorder());
+        backButton.setFocusable(false);
+        backButton.setFont(new Font("Monospaced" , Font.BOLD , 20));
+        backButton.setForeground(Color.black);
+        backButton.setOpaque(true);
+
+
+
+        // instantiate HomePageGUI to use its methods
+        // HomePage homePage = new HomePage(client);
+
+        controlPanel.add(addButton) ;
+        controlPanel.add(backButton) ;
+        topPanel.add(controlPanel) ;
+
+        frame.add(topPanel) ;
+
+        frame.setVisible(true);
 
         // action listener for submit button
-        submitButton.addActionListener(new ActionListener() {
+        addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     // send server code & the user inputs
                     output.println("6");
-                    String name = nameField.getText();
-                    String phoneNumber = phoneField.getText();
+                    String name = usernameFeild.getText();
+                    String phoneNumber = phoneFeild.getText();
                     output.println(name);
                     output.println(phoneNumber);
                     // get server response & show msg dialog
@@ -157,7 +280,7 @@ public class UserActions {
         });
 
         // add panel to frame
-        frame.add(panel);
+
         frame.setVisible(true);
     }
 
@@ -166,23 +289,99 @@ public class UserActions {
     // --------------------------------------
     // remove contact (server code 10)
     public void removeContact() {
-        // create frame & panel
-        JFrame frame = new JFrame("Remove Contact");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(1000, 800);
-        JPanel panel = new JPanel(new GridLayout(2, 2));
+        JFrame frame = new JFrame(" Remove Contact") ;
+        frame.setLayout(new FlowLayout());
+        frame.setLocation(400 , 0);
+        frame.setSize(new Dimension(700 , 960));
+        frame.getContentPane().setBackground(new Color(0x141414));
 
-        // components
-        JLabel phoneLabel = new JLabel("Phone Number:");
-        JTextField phoneField = new JTextField();
-        JButton removeButton = new JButton("Remove Contact");
+
+
+        JPanel topPanel = new JPanel() ;
+        topPanel.setPreferredSize(new Dimension(2000 , 1000));
+        topPanel.setBackground(new Color(0x141414));
+        topPanel.setLayout(null);
+
+        JLabel banner = new JLabel("          Remove Contact") ;
+        banner.setFont(new Font("Monospaced", Font.BOLD, 30));
+        banner.setForeground(new Color(0x6eaa6b));
+        banner.setOpaque(true);
+        ImageIcon front = new ImageIcon("img_1.png") ;
+        Image frontImage = front.getImage().getScaledInstance(1800 , 325 , Image.SCALE_SMOOTH) ;
+        ImageIcon frontIcon = new ImageIcon(frontImage) ;
+        banner.setIcon(frontIcon);
+        banner.setHorizontalTextPosition(JLabel.CENTER);
+        banner.setVerticalTextPosition(JLabel.TOP);
+        banner.setIconTextGap(-200);
+
+        banner.setVerticalAlignment(JLabel.CENTER);
+        banner.setHorizontalAlignment(JLabel.CENTER);
+        banner.setBounds(0,0 , 1800 , 325);
+        topPanel.add(banner) ;
+
+
+
+        JPanel inputPanel = new JPanel() ;
+        inputPanel.setLayout(new FlowLayout( FlowLayout.CENTER , 10 ,50));
+
+        inputPanel.setBounds(690,310, 550,200);
+        inputPanel.setBackground(new Color(0x141414));
+
+
+
+
+        JLabel phone = new JLabel("   Phone: ") ; // Labels don't need prefered size
+        phone.setFont(new Font("Monospaced" , Font.PLAIN , 20));
+        phone.setForeground(Color.yellow);
+
+        JTextField phoneFeild = new JTextField() ;
+        phoneFeild.setPreferredSize(new Dimension(300 ,30));
+        phoneFeild.setBorder(BorderFactory.createEmptyBorder());
+        phoneFeild.setFont(new Font("Monospaced" , Font.BOLD , 20));
+        inputPanel.add(phone);
+        inputPanel.add(phoneFeild) ;
+        topPanel.add(inputPanel);
+
+
+
+        //Buttons
+        JPanel controlPanel = new JPanel() ;
+        controlPanel.setLayout(new FlowLayout(FlowLayout.CENTER , 50 ,10));
+        controlPanel.setBounds(650,470, 700,250);
+        controlPanel.setBackground(new Color(0x141414));
+
+        JButton removeButton = new JButton("Remove");
+        removeButton.setPreferredSize(new Dimension(150, 50));
+        removeButton.setBackground(Color.magenta) ;
+        removeButton.setBorder(BorderFactory.createEtchedBorder());
+        removeButton.setFocusable(false);
+        removeButton.setFont(new Font("Monospaced" , Font.BOLD , 20));
+        removeButton.setForeground(Color.black);
+        removeButton.setOpaque(true);
+
+
         JButton backButton = new JButton("Back");
-        panel.add(phoneLabel);
-        panel.add(phoneField);
-        panel.add(removeButton);
-        panel.add(backButton);
-        phoneLabel.setHorizontalAlignment(JLabel.CENTER);
-        phoneLabel.setVerticalAlignment(JLabel.CENTER);
+        backButton.setPreferredSize(new Dimension(150, 50));
+        backButton.setBackground(new Color(0x6eaa6b)) ;
+        backButton.setBorder(BorderFactory.createEtchedBorder());
+        backButton.setFocusable(false);
+        backButton.setFont(new Font("Monospaced" , Font.BOLD , 20));
+        backButton.setForeground(Color.black);
+        backButton.setOpaque(true);
+
+
+
+        // instantiate HomePageGUI to use its methods
+        // HomePage homePage = new HomePage(client);
+
+        controlPanel.add(removeButton) ;
+        controlPanel.add(backButton) ;
+        topPanel.add(controlPanel) ;
+
+        frame.add(topPanel) ;
+
+        frame.setVisible(true);
+
 
         // action listener
         removeButton.addActionListener(new ActionListener() {
@@ -191,7 +390,7 @@ public class UserActions {
                 try {
                     // send server code & inputs to server
                     output.println("10");
-                    String phoneNumber = phoneField.getText().trim();
+                    String phoneNumber = phoneFeild.getText().trim();
                     output.println(phoneNumber);
                     // display server response
                     String serverResponse = bfr.readLine();
@@ -216,7 +415,7 @@ public class UserActions {
         });
 
         // add panel to frame
-        frame.add(panel);
+
         frame.setVisible(true);
     }
 
@@ -228,7 +427,8 @@ public class UserActions {
         // create frame & panel
         JFrame frame = new JFrame("Block List");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(1000, 800);
+        frame.setSize(700, 900);
+        frame.setLocationRelativeTo(null);
         JPanel panel = new JPanel(new BorderLayout());
 
         // server code
@@ -271,7 +471,8 @@ public class UserActions {
         // create frame & panel
         JFrame frame = new JFrame("Block Contact");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(1000, 800);
+        frame.setSize(700, 900);
+        frame.setLocationRelativeTo(null);
         JPanel panel = new JPanel(new GridLayout(3, 1, 10, 10));
 
         // components
@@ -394,30 +595,113 @@ public class UserActions {
     // --------------------------------------
     // start conversation (server code 11)
     public void startConversation() {
+
         // create frame & panel
-        JFrame frame = new JFrame("Start Conversation");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(1000, 800);
-        JPanel panel = new JPanel(new GridLayout(3, 1, 10, 10));
+        JFrame frame = new JFrame(" Remove Contact") ;
+        frame.setLayout(new FlowLayout());
+        frame.setLocation(400 , 0);
+        frame.setSize(new Dimension(700 , 960));
+        frame.getContentPane().setBackground(Color.white);
 
-        // components
-        JLabel userLabel = new JLabel("<html>Enter username to start<br>a conversation with:</html>");
-        userLabel.setHorizontalAlignment(JLabel.CENTER);
-        userLabel.setVerticalAlignment(JLabel.CENTER);
-        JTextField userField = new JTextField();
-        JButton startButton = new JButton("Start Conversation");
+
+
+        JPanel topPanel = new JPanel() ;
+        topPanel.setPreferredSize(new Dimension(2000 , 1000));
+        topPanel.setBackground(new Color(0x141414));
+        topPanel.setLayout(null);
+
+        JLabel banner = new JLabel("<html>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;" +
+                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Start Your New<br>&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cosmic Conversation!</html>") ;
+        banner.setFont(new Font("Monospaced", Font.PLAIN, 30));
+        banner.setForeground(Color.white);
+        banner.setOpaque(true);
+        ImageIcon front = new ImageIcon("img_2.png") ;
+        Image frontImage = front.getImage().getScaledInstance(1800 , 990 , Image.SCALE_SMOOTH) ;
+        ImageIcon frontIcon = new ImageIcon(frontImage) ;
+        banner.setIcon(frontIcon);
+        banner.setHorizontalTextPosition(JLabel.CENTER);
+        banner.setVerticalTextPosition(JLabel.TOP);
+        banner.setIconTextGap(-200);
+
+        banner.setVerticalAlignment(JLabel.CENTER);
+        banner.setHorizontalAlignment(JLabel.CENTER);
+        banner.setBounds(0,0 , 1800 , 990);
+        topPanel.add(banner) ;
+
+
+
+        JPanel inputPanel = new JPanel() ;
+        inputPanel.setLayout(new FlowLayout( FlowLayout.CENTER , 10 ,50));
+
+        inputPanel.setBounds(800,280, 400,250);
+        inputPanel.setBackground(Color.white);
+        inputPanel.setOpaque(false);
+        inputPanel.setBorder(BorderFactory.createEtchedBorder());
+
+
+
+
+        JLabel username = new JLabel("Username: ") ; // Labels don't need prefered size
+        username.setFont(new Font("Monospaced" , Font.PLAIN , 30));
+        username.setForeground(Color.white);
+        username.setBackground(Color.white);
+        // username.setBorder(BorderFactory.createEtchedBorder());
+        username.setOpaque(false);
+
+        JTextField usernameFeild = new JTextField() ;
+        usernameFeild.setPreferredSize(new Dimension(300 ,40));
+        usernameFeild.setBorder(BorderFactory.createEmptyBorder());
+        usernameFeild.setFont(new Font("Monospaced" , Font.BOLD , 20));
+        inputPanel.add(username);
+        inputPanel.add(usernameFeild) ;
+        topPanel.add(inputPanel , JLabel.CENTER);
+
+
+
+        //Buttons
+        JPanel controlPanel = new JPanel() ;
+        controlPanel.setLayout(new FlowLayout(FlowLayout.CENTER , 50 ,10));
+        controlPanel.setBounds(650,550, 700,250);
+        controlPanel.setBackground(new Color(0x141414));
+        controlPanel.setOpaque(false);
+
+        JButton startButton = new JButton("Start");
+        startButton.setPreferredSize(new Dimension(150, 50));
+        startButton.setBackground(Color.white) ;
+        startButton.setBorder(BorderFactory.createEtchedBorder());
+        startButton.setFocusable(false);
+        startButton.setFont(new Font("Monospaced" , Font.BOLD , 20));
+        startButton.setForeground(Color.white);
+        startButton.setOpaque(false);
+
+
         JButton backButton = new JButton("Back");
-        panel.add(userLabel);
-        panel.add(userField);
-        panel.add(startButton);
-        panel.add(backButton);
-        frame.add(panel);
+        backButton.setPreferredSize(new Dimension(150, 50));
+        backButton.setBackground(Color.white) ;
+        backButton.setBorder(BorderFactory.createEtchedBorder());
+        backButton.setFocusable(false);
+        backButton.setFont(new Font("Monospaced" , Font.BOLD , 20));
+        backButton.setForeground(Color.white);
+        backButton.setOpaque(false);
 
+
+
+        // instantiate HomePageGUI to use its methods
+        // HomePage homePage = new HomePage(client);
+
+        controlPanel.add(startButton) ;
+        controlPanel.add(backButton) ;
+        topPanel.add(controlPanel , JLabel.CENTER) ;
+
+        frame.add(topPanel) ;
+
+        frame.setVisible(true);
         // action listeners
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String user = userField.getText().trim();
+                String user = usernameFeild.getText().trim();
                 if (!user.isEmpty()) {
                     try {
                         // send server code & user input
@@ -458,29 +742,109 @@ public class UserActions {
     // delete conversation (server code 12)
     public void deleteConversation() {
         // create frame & panel
-        JFrame frame = new JFrame("Delete Conversation");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(1000, 800);
-        JPanel panel = new JPanel(new GridLayout(3, 1, 10, 10));
+        JFrame frame = new JFrame(" Remove Contact") ;
+        frame.setLayout(new FlowLayout());
+        frame.setLocation(400 , 0);
+        frame.setSize(new Dimension(700 , 960));
+        frame.getContentPane().setBackground(Color.white);
 
-        // components
-        JLabel userLabel = new JLabel("<html>Enter username to delete<br>a conversation with:</html>");
-        userLabel.setHorizontalAlignment(JLabel.CENTER);
-        userLabel.setVerticalAlignment(JLabel.CENTER);
-        JTextField userField = new JTextField();
-        JButton deleteButton = new JButton("Delete Conversation");
+
+
+        JPanel topPanel = new JPanel() ;
+        topPanel.setPreferredSize(new Dimension(2000 , 1000));
+        topPanel.setBackground(new Color(0x141414));
+        topPanel.setLayout(null);
+
+        JLabel banner = new JLabel("       Delete Conversation") ;
+        banner.setFont(new Font("Monospaced", Font.PLAIN, 30));
+        banner.setForeground(Color.white);
+        banner.setOpaque(true);
+        ImageIcon front = new ImageIcon("img_2.png") ;
+        Image frontImage = front.getImage().getScaledInstance(1800 , 990 , Image.SCALE_SMOOTH) ;
+        ImageIcon frontIcon = new ImageIcon(frontImage) ;
+        banner.setIcon(frontIcon);
+        banner.setHorizontalTextPosition(JLabel.CENTER);
+        banner.setVerticalTextPosition(JLabel.TOP);
+        banner.setIconTextGap(-200);
+
+        banner.setVerticalAlignment(JLabel.CENTER);
+        banner.setHorizontalAlignment(JLabel.CENTER);
+        banner.setBounds(0,0 , 1800 , 990);
+        topPanel.add(banner) ;
+
+
+
+        JPanel inputPanel = new JPanel() ;
+        inputPanel.setLayout(new FlowLayout( FlowLayout.CENTER , 10 ,50));
+
+        inputPanel.setBounds(800,280, 400,250);
+        inputPanel.setBackground(Color.white);
+        inputPanel.setOpaque(false);
+        inputPanel.setBorder(BorderFactory.createEtchedBorder());
+
+
+
+
+        JLabel username = new JLabel("Username: ") ; // Labels don't need prefered size
+        username.setFont(new Font("Monospaced" , Font.PLAIN , 30));
+        username.setForeground(Color.white);
+        username.setBackground(Color.white);
+        // username.setBorder(BorderFactory.createEtchedBorder());
+        username.setOpaque(false);
+
+        JTextField usernameFeild = new JTextField() ;
+        usernameFeild.setPreferredSize(new Dimension(300 ,40));
+        usernameFeild.setBorder(BorderFactory.createEmptyBorder());
+        usernameFeild.setFont(new Font("Monospaced" , Font.BOLD , 20));
+        inputPanel.add(username);
+        inputPanel.add(usernameFeild) ;
+        topPanel.add(inputPanel , JLabel.CENTER);
+
+
+
+        //Buttons
+        JPanel controlPanel = new JPanel() ;
+        controlPanel.setLayout(new FlowLayout(FlowLayout.CENTER , 50 ,10));
+        controlPanel.setBounds(650,550, 700,250);
+        controlPanel.setBackground(new Color(0x141414));
+        controlPanel.setOpaque(false);
+
+        JButton deleteButton = new JButton("Delete");
+        deleteButton.setPreferredSize(new Dimension(150, 50));
+        deleteButton.setBackground(Color.white) ;
+        deleteButton.setBorder(BorderFactory.createEtchedBorder());
+        deleteButton.setFocusable(false);
+        deleteButton.setFont(new Font("Monospaced" , Font.BOLD , 20));
+        deleteButton.setForeground(Color.white);
+        deleteButton.setOpaque(false);
+
+
         JButton backButton = new JButton("Back");
-        panel.add(userLabel);
-        panel.add(userField);
-        panel.add(deleteButton);
-        panel.add(backButton);
-        frame.add(panel);
+        backButton.setPreferredSize(new Dimension(150, 50));
+        backButton.setBackground(Color.white) ;
+        backButton.setBorder(BorderFactory.createEtchedBorder());
+        backButton.setFocusable(false);
+        backButton.setFont(new Font("Monospaced" , Font.BOLD , 20));
+        backButton.setForeground(Color.white);
+        backButton.setOpaque(false);
 
+
+
+        // instantiate HomePageGUI to use its methods
+        // HomePage homePage = new HomePage(client);
+
+        controlPanel.add(deleteButton) ;
+        controlPanel.add(backButton) ;
+        topPanel.add(controlPanel , JLabel.CENTER) ;
+
+        frame.add(topPanel) ;
+
+        frame.setVisible(true);
         // action listeners
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String user = userField.getText().trim();
+                String user = usernameFeild.getText().trim();
                 if (!user.isEmpty()) {
                     try {
                         // send server code & user input
@@ -520,39 +884,103 @@ public class UserActions {
     // --------------------------------------
     // get all messages with user (server code 13)
     public void getMessages() {
-        // create frame
-        JFrame frame = new JFrame("View Messages");
+        JFrame frame = new JFrame("Chat History");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(1000, 800);
-        // create panels
-        JPanel panel = new JPanel(new BorderLayout());
+        frame.setSize(700, 900);
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(null);
 
-        // panel & components for input field (entering contact name)
-        JPanel inputPanel = new JPanel(new GridLayout(2, 1, 5, 5));
-        JLabel userLabel = new JLabel("Enter contact's username:");
-        JTextField userField = new JTextField();
-        inputPanel.add(userLabel);
-        inputPanel.add(userField);
+
+        ImageIcon front = new ImageIcon("frontBg.jpg");
+        Image frontImage = front.getImage().getScaledInstance(1750, 1200, Image.SCALE_SMOOTH);
+        ImageIcon frontIcon = new ImageIcon(frontImage);
+        // labels & buttons
+        JLabel label = new JLabel("CHAT HISTORY");
+        label.setLayout(null);
+
+        label.setBackground(new Color(0x053e71));
+        label.setFont(new Font("Monospaced", Font.PLAIN, 25));
+        label.setForeground(Color.white);
+        label.setOpaque(true);
+        label.setBounds(0, 0, 700, 900); // Adjusted position and size
+        label.setIcon(frontIcon);
+        label.setHorizontalTextPosition(JLabel.CENTER);
+        label.setVerticalTextPosition(JLabel.TOP);
+        label.setIconTextGap(-300);
+
+        label.setVerticalAlignment(JLabel.CENTER);
+        label.setHorizontalAlignment(JLabel.CENTER);
+
+        frame.getContentPane().add(label);
+        label.setLayout(null); // Ensure absolute positioning
+
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new FlowLayout());
+        inputPanel.setBounds(75, 170, 550, 40);
+        inputPanel.setOpaque(false);
+        // components for enter username
+        JLabel username = new JLabel("Username: ");
+        // Labels don't need prefered size
+        username.setFont(new Font("Monospaced", Font.PLAIN, 20));
+        username.setForeground(Color.yellow);
+
+        JTextField usernameFeild = new JTextField();
+        usernameFeild.setPreferredSize(new Dimension(300, 25));
+        usernameFeild.setBorder(BorderFactory.createEmptyBorder());
+        usernameFeild.setFont(new Font("Monospaced", Font.BOLD, 20));
+
+        inputPanel.add(username);
+        inputPanel.add(usernameFeild);
+        frame.add(inputPanel , JLabel.CENTER);
+
+
         // panel & components for view/back buttons
         JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+        buttonPanel.setOpaque(false);
         JButton viewButton = new JButton("View Messages");
+        viewButton.setBackground(Color.yellow) ;
+        viewButton.setBorder(BorderFactory.createEtchedBorder());
+        viewButton.setFocusable(false);
+        viewButton.setFont(new Font("Monospaced" , Font.BOLD , 15));
+        viewButton.setForeground(Color.black);
+        viewButton.setOpaque(true);
         JButton backButton = new JButton("Back");
+        backButton.setBackground(new Color(0x6eaa6b)) ;
+        backButton.setBorder(BorderFactory.createEtchedBorder());
+        backButton.setFocusable(false);
+        backButton.setFont(new Font("Monospaced" , Font.BOLD , 15));
+        backButton.setForeground(Color.black);
+        backButton.setOpaque(true);
+        buttonPanel.setBounds(300, 635, 300, 50);
         buttonPanel.add(viewButton);
         buttonPanel.add(backButton);
+        frame.add(buttonPanel , JLabel.CENTER) ;
         // create JList to display messages
-        JList<String> messageList = new JList<>();
+        String[] messages =  {""} ;
+        JList<String> messageList = new JList<>(messages);
+        messageList.setFont(new Font("Monospaced" , Font.PLAIN , 20));
+        messageList.setForeground(Color.white);
+        messageList.setBackground(new Color(0x141414));
+
+        // make scrollable
         JScrollPane scrollPane = new JScrollPane(messageList);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setOpaque(false);
+        scrollPane.setBounds(75 , 230 , 540 , 380);
+        scrollPane.setBackground(new Color(0x141414));
+        scrollPane.setBorder(BorderFactory.createEtchedBorder());
+        frame.add(scrollPane , JLabel.CENTER) ;
 
         // add components to main frame
-        panel.add(inputPanel, BorderLayout.NORTH);
-        panel.add(scrollPane, BorderLayout.CENTER);
-        panel.add(buttonPanel, BorderLayout.SOUTH);
+        //panel.add(inputPanel, BorderLayout.NORTH);
+        // panel.add(scrollPane, BorderLayout.CENTER);
+        //panel.add(buttonPanel, BorderLayout.SOUTH);
 
         // action listeners
         viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String messenger = userField.getText().trim();
+                String messenger = (String) usernameFeild.getText().trim();
                 if (!messenger.isEmpty()) {
                     try {
                         // send server code & user input
@@ -584,8 +1012,10 @@ public class UserActions {
             }
         });
 
+
+
         // set frame visible
-        frame.add(panel);
+
         frame.setVisible(true);
     }
 
@@ -594,43 +1024,95 @@ public class UserActions {
     // --------------------------------------
     // send message (server code 14)
     public void sendMessage() {
-        // create frame & main panel
-        JFrame frame = new JFrame("Send Message");
+        JFrame frame = new JFrame("Chat History");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(1000, 800);
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+        frame.setSize(700, 900);
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(null);
 
-        // input panel for username/message input
+
+        ImageIcon front = new ImageIcon("frontBg.jpg");
+        Image frontImage = front.getImage().getScaledInstance(1750, 1200, Image.SCALE_SMOOTH);
+        ImageIcon frontIcon = new ImageIcon(frontImage);
+        // labels & buttons
+        JLabel label = new JLabel("SEND MESSAGE");
+        label.setLayout(null);
+
+        label.setBackground(new Color(0x053e71));
+        label.setFont(new Font("Monospaced", Font.PLAIN, 25));
+        label.setForeground(Color.white);
+        label.setOpaque(true);
+        label.setBounds(0, 0, 700, 900); // Adjusted position and size
+        label.setIcon(frontIcon);
+        label.setHorizontalTextPosition(JLabel.CENTER);
+        label.setVerticalTextPosition(JLabel.TOP);
+        label.setIconTextGap(-285);
+
+        label.setVerticalAlignment(JLabel.CENTER);
+        label.setHorizontalAlignment(JLabel.CENTER);
+
+        frame.getContentPane().add(label);
+        label.setLayout(null); // Ensure absolute positioning
+
         JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new GridLayout(2, 2, 5, 5));
+        inputPanel.setLayout(new FlowLayout());
+        inputPanel.setBounds(75, 170, 550, 40);
+        inputPanel.setOpaque(false);
         // components for enter username
-        JLabel usernameLabel = new JLabel("<html>Enter username to<br>send a message to:</html>");
-        usernameLabel.setHorizontalAlignment(JLabel.CENTER);
-        usernameLabel.setVerticalAlignment(JLabel.CENTER);
-        JTextField usernameField = new JTextField();
-        inputPanel.add(usernameLabel);
-        inputPanel.add(usernameField);
-        // components for enter message
-        JLabel messageLabel = new JLabel("Enter your message:");
-        messageLabel.setHorizontalAlignment(JLabel.CENTER);
-        messageLabel.setVerticalAlignment(JLabel.CENTER);
-        JTextField messageField = new JTextField();
-        inputPanel.add(messageLabel);
-        inputPanel.add(messageField);
-        // add input panel to main panel
-        panel.add(inputPanel, BorderLayout.CENTER);
+        JLabel username = new JLabel("Username: ");
+        // Labels don't need prefered size
+        username.setFont(new Font("Monospaced", Font.PLAIN, 20));
+        username.setForeground(Color.yellow);
 
-        // bottom panel
-        JPanel bottomPanel = new JPanel(new GridLayout(1, 2, 10, 0));
-        // send message button & action listener
-        JButton sendButton = new JButton("Send Message");
+        JTextField usernameFeild = new JTextField();
+        usernameFeild.setPreferredSize(new Dimension(300, 25));
+        usernameFeild.setBorder(BorderFactory.createEmptyBorder());
+        usernameFeild.setFont(new Font("Monospaced", Font.BOLD, 20));
+
+        inputPanel.add(username);
+        inputPanel.add(usernameFeild);
+        frame.add(inputPanel , JLabel.CENTER);
+
+
+        // panel & components for view/back buttons
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+        buttonPanel.setOpaque(false);
+        JButton sendButton = new JButton("Send");
+        sendButton.setBackground(Color.yellow) ;
+        sendButton.setBorder(BorderFactory.createEtchedBorder());
+        sendButton.setFocusable(false);
+        sendButton.setFont(new Font("Monospaced" , Font.BOLD , 20));
+        sendButton.setForeground(Color.black);
+        sendButton.setOpaque(true);
+        JButton backButton = new JButton("Back");
+        backButton.setBackground(new Color(0x6eaa6b)) ;
+        backButton.setBorder(BorderFactory.createEtchedBorder());
+        backButton.setFocusable(false);
+        backButton.setFont(new Font("Monospaced" , Font.BOLD , 20));
+        backButton.setForeground(Color.black);
+        backButton.setOpaque(true);
+        buttonPanel.setBounds(300, 560, 300, 50);
+        buttonPanel.add(sendButton);
+        buttonPanel.add(backButton);
+        frame.add(buttonPanel , JLabel.CENTER) ;
+
+        // make scrollable
+        JTextArea textArea = new JTextArea("Enter Message (in a single line)");
+        textArea.setFont(new Font("Monospaced" , Font.PLAIN , 20));
+        textArea.setForeground(Color.white);
+        textArea.setOpaque(true);
+        textArea.setBounds(75 , 230 , 540 , 300);
+        textArea.setBackground(new Color(0x222222));
+        textArea.setBorder(BorderFactory.createEtchedBorder());
+        frame.add(textArea , JLabel.CENTER) ;
+
+        frame.setVisible(true);
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // store user inputs
-                String username = usernameField.getText();
-                String message = messageField.getText();
+                String username = usernameFeild.getText();
+                String message = textArea.getText();
                 try {
                     // send server code & user input to server
                     output.println("14");
@@ -644,14 +1126,11 @@ public class UserActions {
                 }
                 // close frame & go home
                 frame.dispose();
-                HomePage homePage = new HomePage(client);
-                homePage.showHomePage();
+                getMessages();
+
             }
         });
-        bottomPanel.add(sendButton);
 
-        // back button
-        JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -660,11 +1139,7 @@ public class UserActions {
                 homePage.showHomePage();
             }
         });
-        bottomPanel.add(backButton);
 
-        // add panel to frame
-        frame.add(bottomPanel, BorderLayout.SOUTH);
-        frame.add(panel);
         frame.setVisible(true);
     }
 
@@ -673,43 +1148,96 @@ public class UserActions {
     // --------------------------------------
     // delete message (server code 15)
     public void deleteMessage() {
-        // create frame & main panel
+
         JFrame frame = new JFrame("Delete Message");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(1000, 800);
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+        frame.setSize(700, 900);
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(null);
 
-        // input panel for username/message input
+
+        ImageIcon front = new ImageIcon("frontBg.jpg");
+        Image frontImage = front.getImage().getScaledInstance(1750, 1200, Image.SCALE_SMOOTH);
+        ImageIcon frontIcon = new ImageIcon(frontImage);
+        // labels & buttons
+        JLabel label = new JLabel("DELETE MESSAGE");
+        label.setLayout(null);
+
+        label.setBackground(new Color(0x053e71));
+        label.setFont(new Font("Monospaced", Font.PLAIN, 25));
+        label.setForeground(Color.white);
+        label.setOpaque(true);
+        label.setBounds(0, 0, 700, 900); // Adjusted position and size
+        label.setIcon(frontIcon);
+        label.setHorizontalTextPosition(JLabel.CENTER);
+        label.setVerticalTextPosition(JLabel.TOP);
+        label.setIconTextGap(-285);
+
+        label.setVerticalAlignment(JLabel.CENTER);
+        label.setHorizontalAlignment(JLabel.CENTER);
+
+        frame.getContentPane().add(label);
+        label.setLayout(null); // Ensure absolute positioning
+
         JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new GridLayout(2, 2, 5, 5));
+        inputPanel.setLayout(new FlowLayout());
+        inputPanel.setBounds(75, 170, 550, 40);
+        inputPanel.setOpaque(false);
         // components for enter username
-        JLabel usernameLabel = new JLabel("<html>Enter username to delete<br>a a message from:</html>");
-        usernameLabel.setHorizontalAlignment(JLabel.CENTER);
-        usernameLabel.setVerticalAlignment(JLabel.CENTER);
-        JTextField usernameField = new JTextField();
-        inputPanel.add(usernameLabel);
-        inputPanel.add(usernameField);
-        // components for enter message
-        JLabel messageLabel = new JLabel("Enter your message to delete:");
-        messageLabel.setHorizontalAlignment(JLabel.CENTER);
-        messageLabel.setVerticalAlignment(JLabel.CENTER);
-        JTextField messageField = new JTextField();
-        inputPanel.add(messageLabel);
-        inputPanel.add(messageField);
-        // add input panel to main panel
-        panel.add(inputPanel, BorderLayout.CENTER);
+        JLabel username = new JLabel("Username: ");
+        // Labels don't need prefered size
+        username.setFont(new Font("Monospaced", Font.PLAIN, 20));
+        username.setForeground(Color.yellow);
 
-        // bottom panel
-        JPanel bottomPanel = new JPanel(new GridLayout(1, 2, 10, 0));
-        // send message button & action listener
-        JButton deleteButton = new JButton("Delete Message");
+        JTextField usernameFeild = new JTextField();
+        usernameFeild.setPreferredSize(new Dimension(300, 25));
+        usernameFeild.setBorder(BorderFactory.createEmptyBorder());
+        usernameFeild.setFont(new Font("Monospaced", Font.BOLD, 20));
+
+        inputPanel.add(username);
+        inputPanel.add(usernameFeild);
+        frame.add(inputPanel , JLabel.CENTER);
+
+
+        // panel & components for view/back buttons
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+        buttonPanel.setOpaque(false);
+        JButton deleteButton = new JButton("Delete");
+        deleteButton.setBackground(Color.yellow) ;
+        deleteButton.setBorder(BorderFactory.createEtchedBorder());
+        deleteButton.setFocusable(false);
+        deleteButton.setFont(new Font("Monospaced" , Font.BOLD , 20));
+        deleteButton.setForeground(Color.black);
+        deleteButton.setOpaque(true);
+        JButton backButton = new JButton("Back");
+        backButton.setBackground(new Color(0x6eaa6b)) ;
+        backButton.setBorder(BorderFactory.createEtchedBorder());
+        backButton.setFocusable(false);
+        backButton.setFont(new Font("Monospaced" , Font.BOLD , 20));
+        backButton.setForeground(Color.black);
+        backButton.setOpaque(true);
+        buttonPanel.setBounds(300, 560, 300, 50);
+        buttonPanel.add(deleteButton);
+        buttonPanel.add(backButton);
+        frame.add(buttonPanel , JLabel.CENTER) ;
+
+        // make scrollable
+        JTextArea textArea = new JTextArea("Enter Message (in a single line)");
+        textArea.setFont(new Font("Monospaced" , Font.PLAIN , 20));
+        textArea.setForeground(Color.white);
+        textArea.setOpaque(true);
+        textArea.setBounds(75 , 230 , 540 , 300);
+        textArea.setBackground(new Color(0x222222));
+        textArea.setBorder(BorderFactory.createEtchedBorder());
+        frame.add(textArea , JLabel.CENTER) ;
+
+        frame.setVisible(true);
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // store user inputs
-                String username = usernameField.getText();
-                String message = messageField.getText();
+                String username = usernameFeild.getText();
+                String message = textArea.getText();
                 try {
                     // send server code & user input to server
                     output.println("15");
@@ -727,10 +1255,7 @@ public class UserActions {
                 homePage.showHomePage();
             }
         });
-        bottomPanel.add(deleteButton);
 
-        // back button
-        JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -739,11 +1264,7 @@ public class UserActions {
                 homePage.showHomePage();
             }
         });
-        bottomPanel.add(backButton);
 
-        // add panel to frame
-        frame.add(bottomPanel, BorderLayout.SOUTH);
-        frame.add(panel);
         frame.setVisible(true);
     }
 

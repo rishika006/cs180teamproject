@@ -1,4 +1,5 @@
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -33,8 +34,6 @@ public class User extends UserManager{
     private Block blocked ;
     private Messages messages ;
     private Conversation conversation ;
-    private UserManager UserManager ;
-
 
 
     // Constructor
@@ -60,14 +59,17 @@ public class User extends UserManager{
         this.messages = new Messages(username) ;
         this.conversation = new Conversation(this) ;
         this.blocked = new Block(username) ;
-        if (ALL_USERS.isEmpty()) {
+        File file = new File("Users.txt") ;
+        if (!file.exists()) {
             try (PrintWriter writer = new PrintWriter(new FileWriter("Users.txt", true))) {
                 writer.print(this);
             } catch (IOException ie) {
                 System.out.println("Error loading to Users.txt");
             }
             ALL_USERS.add(this) ;
-        } else if (!searchUsersFile(this.username)) {
+
+        } else if (!searchUsersFile(username)) {
+
             try (PrintWriter writer = new PrintWriter(new FileWriter("Users.txt", true))) {
                 writer.print(this);
             } catch (IOException ie) {

@@ -31,6 +31,10 @@ public class ContactsManager extends UserManager implements IContactsManager {
     }
     //Reads in the contacts from the storage file
     private void loadContacts() {
+        File file = new File(filePath) ;
+        if (!file.exists()) {
+            return ;
+        }
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             contacts.clear();
@@ -66,6 +70,8 @@ public class ContactsManager extends UserManager implements IContactsManager {
     public String addContact(User user) {
 
         synchronized (gatekeeper) {
+            loadContacts();
+
             if (user == null) {
                 return "User does not exist. Cannot add to contacts." ;
             }

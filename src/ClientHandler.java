@@ -1,4 +1,13 @@
-// CLIENT HANDLER for handling client requests and multi-threadding.
+/**
+ * CS180 Team Project -- Direct Messaging Platform
+ *
+ * Client Handler for handling client requests and multi-threading
+ *
+ * @author Nicholas Chong, Rishitha Adusumilli, Shaivi Mishra, Hiya Jha
+ *
+ * @version 11/27/2024
+ *
+ */
 
 class ClientHandler extends ServerManager implements Runnable {
     private Socket clientSocket;

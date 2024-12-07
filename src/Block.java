@@ -16,13 +16,13 @@ import java.util.List;
 public class Block {
 
     private String username;
-    private static Object gatekeeper;
+    private static Object gateKeeper;
 
 
     // constructor
     public Block(String username) {
         this.username = username;
-        gatekeeper = new Object();
+        gateKeeper = new Object();
     }
 
 

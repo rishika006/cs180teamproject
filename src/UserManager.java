@@ -17,26 +17,26 @@ import java.util.ArrayList;
  */
 public class UserManager  {
 
-    public static ArrayList<User> ALL_USERS ;
-    public static ArrayList<String> ALL_CONVERSATION_FILES ;
-    public static ArrayList<String> ALL_CONTACTS_FILES ;
+    public static ArrayList<User> allUsers;
+    public static ArrayList<String> allConversationFiles;
+    public static ArrayList<String> allContactsFiles;
 
 
     // Creates a UserManager object that contains static ArrayLists to store User Data.
     // Initializes all Arrays.
 
     public UserManager() {
-        if (ALL_USERS == null) {
-            ALL_USERS = new ArrayList<>();
-            ALL_CONVERSATION_FILES = new ArrayList<>() ;
-            ALL_CONTACTS_FILES = new ArrayList<>() ;
+        if (allUsers == null) {
+            allUsers = new ArrayList<>();
+            allConversationFiles = new ArrayList<>();
+            allContactsFiles = new ArrayList<>();
         }
-        if (ALL_CONVERSATION_FILES == null) {
-            ALL_CONVERSATION_FILES = new ArrayList<>() ;
+        if (allConversationFiles == null) {
+            allConversationFiles = new ArrayList<>();
         }
 
-        if (ALL_CONTACTS_FILES == null) {
-            ALL_CONTACTS_FILES = new ArrayList<>() ;
+        if (allContactsFiles == null) {
+            allContactsFiles = new ArrayList<>();
         }
 
     }
@@ -47,9 +47,9 @@ public class UserManager  {
             BufferedReader reader = new BufferedReader(new FileReader("Users.txt"));
             String line = "";
             while ((line = reader.readLine()) != null) {
-                String username = line.split (",")[4] ;
-                User user = getUser(username) ;
-                ALL_USERS.add(user) ;
+                String username = line.split (",")[4];
+                User user = getUser(username);
+                allUsers.add(user);
 
             }
         } catch (IOException ie) {
@@ -58,13 +58,13 @@ public class UserManager  {
     }
 
 
-    // readUser Load users from file to the ALL_USERS ArrayList.
+    // readUser Load users from file to the allUsers ArrayList.
 
     public void readUser() {
         try (BufferedReader reader = new BufferedReader(new FileReader("Users.txt"))) {
 
             String line;
-            ALL_USERS.clear();
+            allUsers.clear();
 
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
@@ -88,7 +88,7 @@ public class UserManager  {
                 String password = userDetails[5];
 
 
-                for (User user : ALL_USERS) {
+                for (User user : allUsers) {
                     if (!user.getUsername().equals(username)) {
                         new User(firstName, lastName, phone, email, username, password);
                     }
@@ -113,7 +113,7 @@ public class UserManager  {
     // This method saves the provided user in the Users.txt file. This means, the given user is not a Messenger User!
 
     private void addUser(User user) {
-        if (!ALL_USERS.contains(user)) {
+        if (!allUsers.contains(user)) {
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter("Users.txt", true))) {
                 writer.write(user.toString());
@@ -123,7 +123,7 @@ public class UserManager  {
                 System.out.println("Error saving user: " + e.getMessage());
 
             }
-            ALL_USERS.add(user) ;
+            allUsers.add(user);
 
         }
 
@@ -135,7 +135,7 @@ public class UserManager  {
 
     public boolean usernameExists(String username) {
         loadUsers();
-        for (User user : ALL_USERS) {
+        for (User user : allUsers) {
 
             if (user.getUsername().equals(username)) {
 
@@ -156,10 +156,10 @@ public class UserManager  {
     public User createNewUser(String firstName, String lastName, String phone, String email, String username, String password, String confirmPassword) {
         loadUsers();
         if (searchUser(username)) {
-            return null ;
+            return null;
         }
 
-        for (User user : ALL_USERS) {
+        for (User user : allUsers) {
             if (user.getUsername().equals(username)) {
 
                 System.out.println("Username already exists. Please choose a different one.");
@@ -173,7 +173,7 @@ public class UserManager  {
 
             System.out.println("Passwords do not match.");
 
-            return null ;
+            return null;
 
         }
 
@@ -196,14 +196,14 @@ public class UserManager  {
 
         if (searchUsersFile(username)) {
             if (userSearch(username) == null) {
-                ALL_USERS.add(getUser(username)) ;
+                allUsers.add(getUser(username));
             }
-            User found = userSearch(username) ;
+            User found = userSearch(username);
             if (found.getPassword().equals(password)) {
-                return true ;
+                return true;
             }
         } else {
-            for (User user : ALL_USERS) {
+            for (User user : allUsers) {
 
                 if (user.getUsername().equals(username)) {
 
@@ -238,12 +238,12 @@ public class UserManager  {
 
     public String getUserInfo(String username) {
 
-        for (User user : ALL_USERS) {
+        for (User user : allUsers) {
 
             if (user.getUsername().equals(username)) {
 
-                String returnString = String.format("Name: %s\nUsername: %s\nPhone: %s\nemail-ID: %s\nAccount Password: %s\n" , user.getFirstName() + " " + user.getLastName() , user.getUsername() , user.getPhone() , user.getEmail() , user.getPassword() ) ;
-                return returnString ;
+                String returnString = String.format("Name: %s\nUsername: %s\nPhone: %s\nemail-ID: %s\nAccount Password: %s\n" , user.getFirstName() + " " + user.getLastName() , user.getUsername() , user.getPhone() , user.getEmail() , user.getPassword() );
+                return returnString;
 
 
 
@@ -251,7 +251,7 @@ public class UserManager  {
 
         }
 
-        return ("User not found.") ;
+        return ("User not found.");
 
     }
 
@@ -263,7 +263,7 @@ public class UserManager  {
 
         //System.out.println("Searching for user: " + username);
 
-        for (User user : ALL_USERS) {
+        for (User user : allUsers) {
 
             if (user.getUsername().equals(username)) {
 
@@ -274,7 +274,7 @@ public class UserManager  {
 
         }
 
-        return false ;
+        return false;
 
     }
 
@@ -284,7 +284,7 @@ public class UserManager  {
 
         //System.out.println("Searching for user: " + username);
 
-        for (User user : ALL_USERS) {
+        for (User user : allUsers) {
 
             if (user.getUsername().equals(username)) {
 
@@ -294,18 +294,18 @@ public class UserManager  {
             }
 
         }
-        return null ;
+        return null;
     }
 
 
     // Added
     public boolean searchUsersFile(String username2) {
-        String line ;
-        String[] user ;
+        String line;
+        String[] user;
         try ( BufferedReader reader = new BufferedReader(new FileReader("Users.txt"))) {
             while ((line = reader.readLine()) != null) {
                 if (line == null || line.isEmpty()) {
-                    return false ;
+                    return false;
                 } else {
                     user = line.split(",");
                     String username = user[4];
@@ -315,21 +315,21 @@ public class UserManager  {
                 }
             }
         } catch (IOException ie ) {
-            return false ;
+            return false;
         }
-        return false ;
+        return false;
     }
 
     // Added
     public User getUser(String username3) {
-        String line ;
-        String[] user ;
+        String line;
+        String[] user;
         try ( BufferedReader reader = new BufferedReader(new FileReader("Users.txt"))) {
             while ((line = reader.readLine()) != null) {
                     user = line.split(",");
                     String username = user[4];
                     if (username.equals(username3)) {
-                        User newUser = new User(user[0] , user [1] , user[2] , user[3] , user[4] , user[5]) ;
+                        User newUser = new User(user[0] , user [1] , user[2] , user[3] , user[4] , user[5]);
                         return newUser;
                     }
 
@@ -338,7 +338,7 @@ public class UserManager  {
             System.out.println("error reading Users.txt");
             return null;
         }
-        return null ;
+        return null;
 
     }
 
@@ -347,7 +347,7 @@ public class UserManager  {
     // Takes user and an image file (.jpg) as arguments and sets image as profilePicture.
     public boolean uploadProfilePicture(User user, String filePath) {
         try {
-            File imageFile = new File(filePath) ;
+            File imageFile = new File(filePath);
             BufferedImage img = ImageIO.read(imageFile);  // Load the image
             user.setProfilePicture(img);  // Set the BufferedImage to the user
             return true;
@@ -368,7 +368,7 @@ public class UserManager  {
             File outputFile = new File(directory, user.getUsername() + "_profile.png"); // Use username for the filename
             try {
                 ImageIO.write(user.getProfilePicture(), "png", outputFile); // Save the image
-                System.out.println("Profile picture saved successfully!") ;
+                System.out.println("Profile picture saved successfully!");
             } catch (IOException e) {
                 System.out.println("Error saving profile picture: " + e.getMessage());
             }

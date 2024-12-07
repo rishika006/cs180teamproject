@@ -5,7 +5,7 @@ import java.net.Socket;
 /**
  * CS180 Team Project -- Direct Messaging Platform
  *
- * the basics to create a server 
+ * The basics to create a server 
  *
  * @author Rishitha Adusumilli and Shaivi Mishra
  *

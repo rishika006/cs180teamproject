@@ -1,3 +1,14 @@
+/**
+ * CS180 Team Project -- Direct Messaging Platform
+ *
+ * Interface for ServerManager
+ *
+ * @author Nicholas Chong, Rishitha Adusumilli, Shaivi Mishra, Hiya Jha
+ *
+ * @version 11/27/2024
+ *
+ */
+
 public interface IServerManager {
 
     boolean user_validateUser(String username, String password);

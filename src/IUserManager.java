@@ -3,7 +3,7 @@
  *
  * Interface for UserManager
  *
- * @author Shaivi Mishra and Hiya Jha
+ * @author Nicholas Chong, Rishitha Adusumilli, Shaivi Mishra, Hiya Jha
  *
  * @version 11/27/2024
  *

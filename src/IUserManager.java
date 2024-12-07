@@ -1,3 +1,14 @@
+/**
+ * CS180 Team Project -- Direct Messaging Platform
+ *
+ * Interface for UserManager
+ *
+ * @author Shaivi Mishra and Hiya Jha
+ *
+ * @version 11/27/2024
+ *
+ */
+
 public interface IUserManager {
     void readUser() ;
     void addUser(User user) ;

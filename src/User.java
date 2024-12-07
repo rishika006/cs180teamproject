@@ -66,7 +66,7 @@ public class User extends UserManager{
             } catch (IOException ie) {
                 System.out.println("Error loading to Users.txt");
             }
-            ALL_USERS.add(this) ;
+            allUsers.add(this) ;
 
         } else if (!searchUsersFile(username)) {
 
@@ -75,7 +75,7 @@ public class User extends UserManager{
             } catch (IOException ie) {
                 System.out.println("Error loading to Users.txt");
             }
-            ALL_USERS.add(this) ;
+            allUsers.add(this) ;
         }
 
 
@@ -106,7 +106,7 @@ public class User extends UserManager{
             } catch (IOException ie) {
                 System.out.println("Error loading to Users.txt");
             }
-            ALL_USERS.add(this) ;
+            allUsers.add(this) ;
         }
 
     }

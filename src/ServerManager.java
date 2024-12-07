@@ -1,7 +1,7 @@
 /**
  * CS180 Team Project -- Direct Messaging Platform
  *
- * Contains methods to help with server managment 
+ * Contains methods to help with server management 
  *
  * @author Rishitha Adusumilli and Shaivi Mishra
  *

@@ -48,7 +48,7 @@ public class Conversation extends UserManager implements IConversation {
 	}
 
 	 */
-//Checks if the user has a conversation with another user if true,
+	//Checks if the user has a conversation with another user if true,
 	//gets the file name storing the conversation
 	public boolean getConversationFileName(String username2) {
 		try (BufferedReader bfr = new BufferedReader(new FileReader("Messages_Files.txt"))) {

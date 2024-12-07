@@ -1,3 +1,14 @@
+/**
+ * CS180 Team Project -- Direct Messaging Platform
+ *
+ * Contains methods to help with server managment 
+ *
+ * @author Rishitha Adusumilli and Shaivi Mishra
+ *
+ * @version 11/27/2024
+ *
+ */
+
 public class ServerManager extends UserManager implements IServerManager {
     public final User helper = new User() ;
 

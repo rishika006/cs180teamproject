@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * CS180 Team Project -- Direct Messaging Platform
- * <p>
+ *
  * All methods for blocking users. Includes methods to block/unblock,
  * checking if a user blocks another user, and printing all users that
  * a username blocks

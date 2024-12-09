@@ -39,10 +39,12 @@ public class ContactsManager extends UserManager implements IContactsManager {
             String line;
             contacts.clear();
             while ((line = reader.readLine()) != null) {
+                System.out.println(line);
                 String[] parts = line.split(",");
 
                 contacts.add(new Contact(parts[0], parts[1])); // CONTACT IN FILE AS : NAME,NUMBER
             }
+
 
         } catch (IOException e) {
             e.printStackTrace();

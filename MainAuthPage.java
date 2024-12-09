@@ -74,7 +74,7 @@ public class MainAuthPage {
 
 
         // labels & buttons
-        JLabel label = new JLabel("Welcome to the Messaging App!");
+        JLabel label = new JLabel("Welcome to Cosmic Conversations!");
         label.setLayout(null);
 
         label.setBackground(Color.black);
@@ -292,11 +292,14 @@ public class MainAuthPage {
 
                     output.println(usernameFeild.getText());
                     output.println(new String(passwordFeild.getText())) ;
+                    UserManager userManager = new UserManager() ;
+                    User thisUser = userManager.getUser(usernameFeild.getText()) ;
+                    client.user = thisUser ;
                     // server response
                     String serverResponse = bfr.readLine();
                     if (serverResponse.equals("true")) {
                         frame.dispose();
-                        homePage.showHomePage();
+                        homePage.showHomePage(thisUser);
                     } else {
                         JOptionPane.showMessageDialog(frame, "Login failed. Please check that username and password are correct.");
                     }
@@ -492,6 +495,7 @@ public class MainAuthPage {
         signUpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 try {
                     output.println("1");
                     output.println(firstNameFeild.getText());
@@ -508,7 +512,7 @@ public class MainAuthPage {
                         frame.dispose();
                         start();
                     } else {
-                        JOptionPane.showMessageDialog(frame, "Sign-up failed. Phone number or username may already have an account, or else make sure your password matches your re-typed password.");
+                        JOptionPane.showMessageDialog(frame, "Invalid Entry! Username already exists.");
                     }
                 } catch (IOException ex) {
                     ex.printStackTrace();

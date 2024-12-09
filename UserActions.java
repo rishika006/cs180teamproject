@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.Scanner; //TODO delete this line after converting displayProfilePicture to GUI
 
 /**
@@ -46,11 +47,14 @@ public class UserActions {
         String user = scanner.nextLine();
         // instantiate HomePage to use its methods
         HomePage homePage = new HomePage(client);
-        homePage.showHomePage();
+        homePage.showHomePage(client.user);
     }
     // TODO: once you fix this method, delete the scanner import at the top
 
 
+    public void userSearch() {
+
+    }
 
     // --------------------------------------
     // view contacts (server code 5)
@@ -125,7 +129,7 @@ public class UserActions {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
                 HomePage homePage = new HomePage(client);
-                homePage.showHomePage();
+                homePage.showHomePage(client.user);
             }
         });
         frame.add(backButton , JLabel.CENTER);
@@ -263,7 +267,7 @@ public class UserActions {
                     // return home
                     frame.dispose();
                     HomePage homePage = new HomePage(client);
-                    homePage.showHomePage();
+                    homePage.showHomePage(client.user);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(frame, "Error adding contact. Check that user exists.");
@@ -275,7 +279,7 @@ public class UserActions {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
                 HomePage homePage = new HomePage(client);
-                homePage.showHomePage();
+                homePage.showHomePage(client.user);
             }
         });
 
@@ -368,9 +372,6 @@ public class UserActions {
         backButton.setFont(new Font("Monospaced" , Font.BOLD , 20));
         backButton.setForeground(Color.black);
         backButton.setOpaque(true);
-
-
-
         // instantiate HomePageGUI to use its methods
         // HomePage homePage = new HomePage(client);
 
@@ -398,7 +399,7 @@ public class UserActions {
                     // close frame
                     frame.dispose();
                     HomePage homePage = new HomePage(client);
-                    homePage.showHomePage();
+                    homePage.showHomePage(client.user);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(frame, "Error removing contact. Make sure you entered the right phone number and the person is in your contacts.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -410,13 +411,13 @@ public class UserActions {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
                 HomePage homePage = new HomePage(client);
-                homePage.showHomePage();
+                homePage.showHomePage(client.user);
             }
         });
 
         // add panel to frame
-
         frame.setVisible(true);
+
     }
 
 
@@ -424,86 +425,77 @@ public class UserActions {
     // --------------------------------------
     // view block list (server code 9)
     public void viewBlockList() {
-        // create frame & panel
         JFrame frame = new JFrame("The people I hate.");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(700, 900);
         frame.setLocationRelativeTo(null);
-        frame.setLayout(null);
+        frame.setLayout(null); // Absolute positioning
 
-        JPanel panel = new JPanel() ;
-
-        ImageIcon front = new ImageIcon("frontBg.jpg") ;
-        Image frontImage = front.getImage().getScaledInstance(1750 , 1200 , Image.SCALE_SMOOTH) ;
-        ImageIcon frontIcon = new ImageIcon(frontImage) ;
-        // labels & buttons
-        JLabel label = new JLabel("MY BLOCKLIST");
-        label.setLayout(null);
-
-        label.setBackground(new Color(0x053e71));
-        label.setFont(new Font("Monospaced", Font.PLAIN, 25));
-        label.setForeground(Color.white);
-        label.setOpaque(true);
-        label.setBounds(0, 0, 700, 900); // Adjusted position and size
-        label.setIcon(frontIcon);
-        label.setHorizontalTextPosition(JLabel.CENTER);
-        label.setVerticalTextPosition(JLabel.TOP);
-        label.setIconTextGap(-300) ;
-
-        label.setVerticalAlignment(JLabel.CENTER);
+        // Background label
+        ImageIcon front = new ImageIcon("frontBg.jpg");
+        Image frontImage = front.getImage().getScaledInstance(1750, 1200, Image.SCALE_SMOOTH);
+        ImageIcon frontIcon = new ImageIcon(frontImage);
+        JLabel label = new JLabel(frontIcon);
+        label.setBounds(0, 0, 700, 900);
         label.setHorizontalAlignment(JLabel.CENTER);
+        frame.add(label);
 
-        frame.getContentPane().add(label);
-        label.setLayout(null); // Ensure absolute positioning
+        // Title label
+        JLabel titleLabel = new JLabel("MY BLOCKLIST", JLabel.CENTER);
+        titleLabel.setFont(new Font("Monospaced", Font.PLAIN, 25));
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setBounds(0, 100, 700, 50);
+        label.add(titleLabel); // Add to label to keep layering consistent
 
-
-        // server code
-        output.println("5");
-        // create JList for list of contacts
-        try {
-            String[] contacts = bfr.readLine().split(";");
-            JList<String> contactList = new JList<>(contacts);
-            contactList.setFont(new Font("Monospaced" , Font.PLAIN , 20));
-            contactList.setForeground(Color.white);
-            contactList.setBackground(new Color(0 , 0, 0 ,0 ));
-
-            // make scrollable
-            JScrollPane scrollPane = new JScrollPane(contactList);
-            scrollPane.getViewport().setOpaque(false);
-            scrollPane.setOpaque(false);
-            scrollPane.setBounds(150 , 240 , 500 , 700);
-            scrollPane.setBorder(BorderFactory.createEmptyBorder());
-            frame.add(scrollPane , JLabel.CENTER) ;
-        } catch (IOException e) {
-            JLabel error = new JLabel("Error reading block list.");
-            error.setBounds(400 ,400 , 200 , 200);
-            frame.add(error);
-        }
-
-        // back button
+        // Back button
         JButton backButton = new JButton("Back");
-        backButton.setBounds(270 , 565 , 150 ,50);
-        backButton.setBackground(new Color(0x6eaa6b)) ;
+        backButton.setBounds(270, 800, 150, 50);
+        backButton.setBackground(new Color(0x6eaa6b));
         backButton.setBorder(BorderFactory.createEtchedBorder());
         backButton.setFocusable(false);
-        backButton.setFont(new Font("Monospaced" , Font.BOLD , 20));
-        backButton.setForeground(Color.black);
-        backButton.setOpaque(true);
+        backButton.setFont(new Font("Monospaced", Font.BOLD, 20));
+        backButton.setForeground(Color.BLACK);
+        label.add(backButton); // Add to label for proper layering
+
+        // Blocklist and Scroll Pane
+        try {
+            output.println("9");
+            String[] blocked = bfr.readLine().split(";");
+            System.out.println(Arrays.toString(blocked));
+
+            JList<String> blockList = new JList<>(blocked);
+            blockList.setFont(new Font("Monospaced", Font.PLAIN, 20));
+            blockList.setForeground(Color.white);
+            blockList.setBackground(new Color(0, 0, 0, 0)); // May need tweaking
+
+            JScrollPane scrollPane = new JScrollPane(blockList);
+            scrollPane.setBounds(200, 200, 500, 600);
+            scrollPane.getViewport().setOpaque(false);
+            scrollPane.setOpaque(false);
+            scrollPane.setBorder(BorderFactory.createEmptyBorder());
+            label.add(scrollPane); // Add to label for proper layering
+        } catch (IOException e) {
+            JLabel error = new JLabel("Error reading block list.", JLabel.CENTER);
+            error.setBounds(100, 400, 500, 50);
+            error.setFont(new Font("Monospaced", Font.PLAIN, 20));
+            error.setForeground(Color.RED);
+            label.add(error); // Add to label for proper layering
+        }
+
+        // Back button action
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
                 HomePage homePage = new HomePage(client);
-                homePage.showHomePage();
+                homePage.showHomePage(client.user);
             }
         });
-        panel.add(backButton, BorderLayout.SOUTH);
-        frame.add(backButton , JLabel.CENTER) ;
 
-        // add panel to frame
-        frame.add(panel);
         frame.setVisible(true);
     }
+
+
 
 
 
@@ -606,7 +598,7 @@ public class UserActions {
         frame.add(topPanel) ;
 
         frame.setVisible(true);
-        
+
         // action listeners
         blockButton.addActionListener(new ActionListener() {
             @Override
@@ -623,7 +615,7 @@ public class UserActions {
                         // return home
                         frame.dispose();
                         HomePage homePage = new HomePage(client);
-                        homePage.showHomePage();
+                        homePage.showHomePage(client.user);
                     } catch(IOException ex) {
                         JOptionPane.showMessageDialog(frame, "Error communicating with server.");
                     }
@@ -638,7 +630,7 @@ public class UserActions {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
                 HomePage homePage = new HomePage(client);
-                homePage.showHomePage();
+                homePage.showHomePage(client.user);
             }
         });
 
@@ -764,7 +756,7 @@ public class UserActions {
                         // return home
                         frame.dispose();
                         HomePage homePage = new HomePage(client);
-                        homePage.showHomePage();
+                        homePage.showHomePage(client.user);
                     } catch (IOException ex) {
                         JOptionPane.showMessageDialog(frame, "Error communicating with server.");
                     }
@@ -779,7 +771,7 @@ public class UserActions {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
                 HomePage homePage = new HomePage(client);
-                homePage.showHomePage();
+                homePage.showHomePage(client.user);
             }
         });
 
@@ -910,7 +902,7 @@ public class UserActions {
                         // return home
                         frame.dispose();
                         HomePage homePage = new HomePage(client);
-                        homePage.showHomePage();
+                        homePage.showHomePage(client.user);
                     } catch (IOException ex) {
                         JOptionPane.showMessageDialog(frame, "Error communicating with server.");
                     }
@@ -925,7 +917,7 @@ public class UserActions {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
                 HomePage homePage = new HomePage(client);
-                homePage.showHomePage();
+                homePage.showHomePage(client.user);
             }
         });
 
@@ -1053,7 +1045,7 @@ public class UserActions {
                         // return home
                         frame.dispose();
                         HomePage homePage = new HomePage(client);
-                        homePage.showHomePage();
+                        homePage.showHomePage(client.user);
                     } catch (IOException ex) {
                         JOptionPane.showMessageDialog(frame, "Error communicating with server.");
                     }
@@ -1068,7 +1060,7 @@ public class UserActions {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
                 HomePage homePage = new HomePage(client);
-                homePage.showHomePage();
+                homePage.showHomePage(client.user);
             }
         });
 
@@ -1205,7 +1197,7 @@ public class UserActions {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
                 HomePage homePage = new HomePage(client);
-                homePage.showHomePage();
+                homePage.showHomePage(client.user);
             }
         });
 
@@ -1333,7 +1325,7 @@ public class UserActions {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
                 HomePage homePage = new HomePage(client);
-                homePage.showHomePage();
+                homePage.showHomePage(client.user);
             }
         });
 
@@ -1449,7 +1441,7 @@ public class UserActions {
                 // close frame & go home
                 frame.dispose();
                 HomePage homePage = new HomePage(client);
-                homePage.showHomePage();
+                homePage.showHomePage(client.user);
             }
         });
 
@@ -1458,12 +1450,250 @@ public class UserActions {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
                 HomePage homePage = new HomePage(client);
-                homePage.showHomePage();
+                homePage.showHomePage(client.user);
             }
         });
 
         frame.setVisible(true);
     }
 
+    public void searchUser() {
+        JFrame frame = new JFrame("Chat History");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(700, 900);
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(null);
+
+
+        ImageIcon front = new ImageIcon("frontBg.jpg");
+        Image frontImage = front.getImage().getScaledInstance(1750, 1200, Image.SCALE_SMOOTH);
+        ImageIcon frontIcon = new ImageIcon(frontImage);
+        // labels & buttons
+        JLabel label = new JLabel("SEARCH   ");
+        label.setLayout(null);
+
+        label.setBackground(new Color(0x053e71));
+        label.setFont(new Font("Monospaced", Font.PLAIN, 25));
+        label.setForeground(Color.white);
+        label.setOpaque(true);
+        label.setBounds(0, 0, 700, 900); // Adjusted position and size
+        label.setIcon(frontIcon);
+        label.setHorizontalTextPosition(JLabel.CENTER);
+        label.setVerticalTextPosition(JLabel.TOP);
+        label.setIconTextGap(-270);
+
+        label.setVerticalAlignment(JLabel.CENTER);
+        label.setHorizontalAlignment(JLabel.CENTER);
+
+        frame.getContentPane().add(label);
+        label.setLayout(null); // Ensure absolute positioning
+
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new FlowLayout());
+        inputPanel.setBounds(75, 170, 550, 40);
+        inputPanel.setOpaque(false);
+        // components for enter username
+        JLabel username = new JLabel("Username: ");
+        // Labels don't need prefered size
+        username.setFont(new Font("Monospaced", Font.PLAIN, 20));
+        username.setForeground(Color.yellow);
+
+        JTextField usernameFeild = new JTextField();
+        usernameFeild.setPreferredSize(new Dimension(300, 25));
+        usernameFeild.setBorder(BorderFactory.createEmptyBorder());
+        usernameFeild.setFont(new Font("Monospaced", Font.BOLD, 20));
+
+        inputPanel.add(username);
+        inputPanel.add(usernameFeild);
+        frame.add(inputPanel , JLabel.CENTER);
+
+
+        // panel & components for view/back buttons
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+        buttonPanel.setOpaque(false);
+        JButton searchButton = new JButton("Search");
+        searchButton.setBackground(Color.yellow) ;
+        searchButton.setBorder(BorderFactory.createEtchedBorder());
+        searchButton.setFocusable(false);
+        searchButton.setFont(new Font("Monospaced" , Font.BOLD , 20));
+        searchButton.setForeground(Color.black);
+        searchButton.setOpaque(true);
+        JButton backButton = new JButton("Back");
+        backButton.setBackground(new Color(0x6eaa6b)) ;
+        backButton.setBorder(BorderFactory.createEtchedBorder());
+        backButton.setFocusable(false);
+        backButton.setFont(new Font("Monospaced" , Font.BOLD , 20));
+        backButton.setForeground(Color.black);
+        backButton.setOpaque(true);
+        buttonPanel.setBounds(300, 635, 300, 50);
+        buttonPanel.add(searchButton);
+        buttonPanel.add(backButton);
+        frame.add(buttonPanel , JLabel.CENTER) ;
+
+
+
+        // create JList to display users
+        UserManager userManager = new UserManager() ;
+        userManager.loadUsers();
+        String[] users  = new String[userManager.ALL_USERS.size()] ;
+        // load all users into the users array
+        int counter = 0 ;
+        for (User user : userManager.ALL_USERS) {
+            users[counter++] = "- @" + user.getUsername() ;
+        }
+
+        JList<String> usersList = new JList<>(users);
+        usersList.setFont(new Font("Monospaced" , Font.PLAIN , 20));
+        usersList.setForeground(Color.white);
+        usersList.setBackground(new Color(0x141414));
+
+        // make scrollable
+        JScrollPane scrollPane = new JScrollPane(usersList);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setOpaque(false);
+        scrollPane.setBounds(75 , 230 , 540 , 380);
+        scrollPane.setBackground(new Color(0x141414));
+        scrollPane.setBorder(BorderFactory.createEtchedBorder());
+        frame.add(scrollPane , JLabel.CENTER) ;
+
+        // add components to main frame
+        //panel.add(inputPanel, BorderLayout.NORTH);
+        // panel.add(scrollPane, BorderLayout.CENTER);
+        //panel.add(buttonPanel, BorderLayout.SOUTH);
+
+
+        // action listeners
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String usertoSearch = (String) usernameFeild.getText().trim();
+                if (!usertoSearch.isEmpty()) {
+                    try {
+                        // send server code & user input
+                        output.println("16");
+                        output.println(usertoSearch);
+                        // create array of messages from server response
+                        String userInfo = bfr.readLine() ;
+
+                        if (userInfo.equals("User does not exist")) {
+                            JOptionPane.showMessageDialog(frame , "User does not exist.");
+
+                        } else {
+                            String[] user = userInfo.split(",");
+                            String message = String.format("User found!\n        @%s   \n" +
+                                    " Would you like to view the user's profile?", user[4]);
+                            // Display a dialog to the user
+                            int response = JOptionPane.showConfirmDialog(
+                                    null,
+                                    message,
+                                    "User Found.",
+                                    JOptionPane.YES_NO_OPTION,
+                                    JOptionPane.QUESTION_MESSAGE
+                            );
+
+                            // Check the user's response
+                            if (response == JOptionPane.YES_OPTION) {
+                                userInfo(userInfo);
+                                bfr.readLine() ;
+                            } else if (response == JOptionPane.NO_OPTION) {
+                               bfr.readLine();
+
+                            }
+                        }
+
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(frame, "Error retrieving messages. Check that you have added the user as a contact and started a conversation with them.");
+                    }
+                } else {
+                    // else input is empty
+                    JOptionPane.showMessageDialog(frame, "Please enter a contact's username instead of leaving it empty.");
+                }
+            }
+        });
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                HomePage homePage = new HomePage(client);
+                homePage.showHomePage(client.user);
+            }
+        });
+
+
+
+
+
+        // set frame visible
+
+        frame.setVisible(true);
+    }
+
+    public void userInfo(String userInfo) {
+        String[] user = userInfo.split(",") ;
+        // create frame & panel
+        JFrame frame = new JFrame("User Profile");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(700, 900);
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(null);
+
+        JPanel panel = new JPanel() ;
+
+        ImageIcon front = new ImageIcon("frontBg.jpg") ;
+        Image frontImage = front.getImage().getScaledInstance(1750 , 1200 , Image.SCALE_SMOOTH) ;
+        ImageIcon frontIcon = new ImageIcon(frontImage) ;
+        // labels & buttons
+        JLabel label = new JLabel("@"+ user[4] , JLabel.CENTER);
+        label.setLayout(null);
+
+        label.setBackground(new Color(0x053e71));
+        label.setFont(new Font("Monospaced", Font.PLAIN, 30));
+        label.setForeground(Color.white);
+        label.setOpaque(true);
+        label.setBounds(0, 0, 700, 900); // Adjusted position and size
+        label.setIcon(frontIcon);
+        label.setHorizontalTextPosition(JLabel.CENTER);
+        label.setVerticalTextPosition(JLabel.TOP);
+        label.setIconTextGap(-300) ;
+
+        label.setVerticalAlignment(JLabel.CENTER);
+        label.setHorizontalAlignment(JLabel.CENTER);
+
+        frame.getContentPane().add(label);
+        label.setLayout(null); // Ensure absolute positioning
+
+        String profile = String.format("<html>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name :  " +
+                "%s<br>Contact Info :  %s<br>&nbsp;&nbsp;&nbsp;&nbsp;Email Id :  %s<br></html>" , user[0] + " " + user[1] , user[2] , user[3]  );
+        JLabel info = new JLabel() ;
+        info.setText(profile);
+        info.setBounds(150 ,80 , 600 , 400);
+        info.setForeground(Color.white);
+        info.setFont(new Font("Monospaced", Font.PLAIN, 20));
+        frame.add(info , JLabel.CENTER) ;
+
+        // back button
+        JButton backButton = new JButton("Back");
+        backButton.setBounds(270 , 565 , 150 ,50);
+        backButton.setBackground(new Color(0x6eaa6b)) ;
+        backButton.setBorder(BorderFactory.createEtchedBorder());
+        backButton.setFocusable(false);
+        backButton.setFont(new Font("Monospaced" , Font.BOLD , 20));
+        backButton.setForeground(Color.black);
+        backButton.setOpaque(true);
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+
+            }
+        });
+        frame.add(backButton , JLabel.CENTER);
+
+        // add panel to frame
+
+        frame.setVisible(true);;
+    }
 
 }
+
+

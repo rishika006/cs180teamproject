@@ -133,6 +133,7 @@ public class UserManager  {
 
     // Check if a username already exists among any other Users in the List of Users.
 
+
     public boolean usernameExists(String username) {
         loadUsers();
         for (User user : ALL_USERS) {
@@ -152,11 +153,16 @@ public class UserManager  {
 
 
     // Create New User
+   // ***********************
 
     public User createNewUser(String firstName, String lastName, String phone, String email, String username, String password, String confirmPassword) {
         loadUsers();
         if (searchUser(username)) {
             return null ;
+        }
+        if (firstName == null || lastName == null ||
+        phone == null || email == null || username == null || password == null || confirmPassword == null) {
+            return null;
         }
 
         for (User user : ALL_USERS) {
@@ -281,6 +287,7 @@ public class UserManager  {
     // Search for a user by username and return that user
 
     public User userSearch(String username) {
+        loadUsers();
 
         //System.out.println("Searching for user: " + username);
 
@@ -296,6 +303,26 @@ public class UserManager  {
         }
         return null ;
     }
+
+
+    public String searchUserInfo(String username) {
+        loadUsers();
+
+        //System.out.println("Searching for user: " + username);
+
+        for (User user : ALL_USERS) {
+
+            if (user.getUsername().equals(username)) {
+
+
+                return user.toString() ;
+
+            }
+
+        }
+        return "User does not exist" ;
+    }
+
 
 
     // Added

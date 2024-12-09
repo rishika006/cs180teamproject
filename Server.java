@@ -90,6 +90,7 @@ class ClientHandler extends ServerManager implements Runnable {
                         break;
                     case "5":
                         String returnString = user_displayContacts(user);
+                        System.out.println(returnString);
                         writer.println(returnString);
                         break;
                     case "6":
@@ -116,7 +117,10 @@ class ClientHandler extends ServerManager implements Runnable {
                         writer.println(result5);
                         break;
                     case "9":
-                        writer.println(user_getBlockedList(user)) ;
+                        String blocklist = user_getBlockedList(user) ;
+                        System.out.println(blocklist);
+
+                        writer.println(blocklist);
                         break;
                     case "10":
                         String phoneNumber = reader.readLine();
@@ -149,6 +153,10 @@ class ClientHandler extends ServerManager implements Runnable {
                         String result15 = user_deleteMessage(user, friend, messageToDelete) ;
                         writer.println(result15);
                         break;
+                    case "16":
+                        String username16 = reader.readLine() ;
+                        String userInfo =  user_searchUserInfo(username16);
+                        writer.println(userInfo);
                 }
             }
 

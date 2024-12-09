@@ -86,7 +86,7 @@ public class Messages implements IMessages {
     }
 
 
-    // CHANGED
+
     // send a message (given as argument) by appending it to conversation username_username.txt file
     public String sendMessage(String username2, String message) {
 
@@ -161,7 +161,6 @@ public class Messages implements IMessages {
     }
 
 
-    // CHANGED!!
     // delete a specific message sent by Username to Username2 (case-insensitive)
     public String deleteMessage(User user, String messageToDelete) {
         if (user == null) {

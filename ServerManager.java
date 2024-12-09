@@ -27,6 +27,10 @@ public class ServerManager extends UserManager implements IServerManager {
         return helper.searchUsersFile(username);
     }
 
+    public String user_searchUserInfo(String username) {
+        return helper.searchUserInfo(username) ;
+    }
+
     public User user_GetUser(String username) {
         return (helper).getUser(username) ;
     }

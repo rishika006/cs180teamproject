@@ -32,7 +32,9 @@ public class HomePage {
 
 
     // home-page for all user choices
-    public void showHomePage() {
+    public void showHomePage(User user) {
+
+
 
         // create JFrame
         JFrame frame = new JFrame("Home Page");
@@ -52,7 +54,7 @@ public class HomePage {
         ImageIcon frontIcon = new ImageIcon(frontImage) ;
 
         // labels & buttons
-        JLabel label = new JLabel("Welcome ");
+        JLabel label = new JLabel("Welcome " + user.getUsername()  , JLabel.CENTER );
         label.setLayout(null);
 
         label.setBackground(new Color(0x053e71));
@@ -306,7 +308,37 @@ public class HomePage {
         frame.add(basePanel);
         frame.setVisible(true);
 
+        
+        //User search button
+        JButton searchButton = new JButton("Search") ;
+        searchButton.setBackground(Color.white) ;
+        searchButton.setBorder(BorderFactory.createEtchedBorder());
+        searchButton.setFocusable(false);
+        searchButton.setFont(new Font("Monospaced" , Font.PLAIN , 20));
+        searchButton.setForeground(Color.white);
+        searchButton.setOpaque(false);
+        searchButton.setBounds(1440 , 10 , 150 , 50 ) ;
+        basePanel.add(searchButton , JLabel.CENTER) ;
 
+        frame.add(basePanel);
+        frame.setVisible(true);
+        
+        // View Profile 
+        JButton viewProfileButton = new JButton("View Profile") ;
+        viewProfileButton.setBackground(Color.white) ;
+        viewProfileButton.setBorder(BorderFactory.createEtchedBorder());
+        viewProfileButton.setFocusable(false);
+        viewProfileButton.setFont(new Font("Monospaced" , Font.PLAIN , 20));
+        viewProfileButton.setForeground(Color.white);
+        viewProfileButton.setOpaque(false);
+        viewProfileButton.setBounds(240, 10 , 175 , 50 ) ;
+        basePanel.add(viewProfileButton , JLabel.CENTER) ;
+
+        frame.add(basePanel);
+        frame.setVisible(true);
+        
+        
+        
         // instantiate UserActions to use their methods
         UserActions userActions = new UserActions(client);
         
@@ -423,6 +455,21 @@ public class HomePage {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
                 new MainAuthPage(client);
+            }
+        });
+        // user Search
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                userActions.searchUser();
+            }
+        });
+        // View Profile
+        viewProfileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                userActions.userInfo(user.toString());
             }
         });
 

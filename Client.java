@@ -19,12 +19,14 @@ public class Client {
     private Socket socket;
     private PrintWriter output;
     private BufferedReader bfr;
+    public User user ;
 
     // constructor
     public Client(String hostname, int port) throws IOException {
         socket = new Socket(hostname, port);
         output = new PrintWriter(socket.getOutputStream(), true);
         bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        user = null ;
 
         new MainAuthPage(this);
     }
